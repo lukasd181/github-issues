@@ -9,6 +9,7 @@ import Modal from "./components/modal";
 import Pagination from "./components/pagination";
 import IssuesList from "./components/issuesList";
 
+
 const override = css`
   display: block;
   margin: 0 auto;
@@ -17,9 +18,10 @@ const override = css`
 function App() {
   let [keyword, setKeyword] = useState("");
   let [error, setError] = useState(null);
-  let [repo, setRepo] = useState("");
-  let [owner, setOwner] = useState("");
+  let [repo, setRepo] = useState("react");
+  let [owner, setOwner] = useState("Facebook");
   let [loading, setLoading] = useState(null);
+  let [list,setList] = useState([])
 
   const handleSubmit = () => {
     console.log("keyword", keyword);
@@ -45,7 +47,9 @@ function App() {
       const response = await fetch(url);
       if (response.status == 200) {
         const data = await response.json();
+        setList(data)
         console.log("data", data);
+
       } else {
         setError("API has some problem");
       }
@@ -78,7 +82,7 @@ function App() {
         color={"#123abc"}
         loading={loading}
       />
-
+      <IssuesList list ={list}/>
       <button type="button">Show Modal</button>
     </div>
   );
