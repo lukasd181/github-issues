@@ -1,0 +1,13 @@
+.oneIssue {
+    display:flex;
+
+    padding:5px;
+    margin:20px;
+    
+}
+.avatar{
+    padding-right:20px;
+}
+.userNameline{
+    color: gray;
+}
