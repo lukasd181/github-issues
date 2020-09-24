@@ -1,11 +1,9 @@
-import React from 'react'
+import React from "react";
 
-const CommentList = () => {
-    return (
-        <div>
-            
-        </div>
-    )
-}
+const CommentList = ({commentsData,getUserLogin,getAvatarUrl,getCommentBody,getCommentPostedTime}) => {
+  return <div>
+      
+  </div>;
+};
 
-export default CommentList
+export default CommentList;
