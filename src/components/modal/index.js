@@ -1,7 +1,7 @@
 import React from "react";
 import CommentList from "../commentList";
 
-const Modal = () => {
+const Modal  = () => {
   return <div></div>;
 };
 

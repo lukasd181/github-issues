@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import SearchBox from "./components/searchBox";
 import { css } from "@emotion/core";
 import ClipLoader from "react-spinners/ClipLoader";
-import Modal from "./components/modal";
+import ModalIssues from "./components/modal";
 import Pagination from "./components/pagination";
 import IssuesList from "./components/issuesList";
 
@@ -20,6 +20,7 @@ function App() {
   let [repo, setRepo] = useState("");
   let [owner, setOwner] = useState("");
   let [loading, setLoading] = useState(null);
+
 
   const handleSubmit = () => {
     console.log("keyword", keyword);
@@ -64,7 +65,6 @@ function App() {
 
   return (
     <div>
-     
       <SearchBox setKeyword={setKeyword} handleSubmit={handleSubmit} />
       {error && (
         <Alert key={0} variant="danger">
