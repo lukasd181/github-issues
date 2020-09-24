@@ -6,8 +6,6 @@ import SearchBox from "./components/searchBox";
 import { css } from "@emotion/core";
 import ClipLoader from "react-spinners/ClipLoader";
 
-
-
 const override = css`
   display: block;
   margin: 0 auto;
@@ -48,12 +46,11 @@ function App() {
   };
   const getIssues = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       const url = `https://api.github.com//repos/${owner}/${repo}/issues`;
       const response = await fetch(url);
-      console.log("Im here")
+      console.log("Im here");
       if (response.status == 200) {
-        
         const data = await response.json();
         console.log("data", data);
       } else {
@@ -63,15 +60,14 @@ function App() {
     } catch (err) {
       setError(`FETCH ERROR ${err.message}`);
     }
-  }
+  };
 
-    useEffect(() => {
-      if (!owner || !repo) {
-        return;
-      }
-      getIssues();
-    }, [owner, repo]);
-
+  useEffect(() => {
+    if (!owner || !repo) {
+      return;
+    }
+    getIssues();
+  }, [owner, repo]);
 
   return (
     <div>
@@ -81,7 +77,6 @@ function App() {
         <Alert key={0} variant="danger">
           {error}
         </Alert>
-
       )}
       <div className="sweet-loading">
         <ClipLoader
@@ -95,7 +90,6 @@ function App() {
       <button type="button">Show Modal</button>
     </div>
   );
-};
-
+}
 
 export default App;
