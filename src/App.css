@@ -36,3 +36,24 @@
     transform: rotate(360deg);
   }
 }
+.pageBar {
+  display: flex;
+  justify-content: center;
+}
+.search-div {
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar {
+  width: 500px !important;
+  margin: 20px;
+}
+
+.info-line * {
+  margin: 5px;
+}
+
+.breakword {
+  word-break: break-all;
+}
