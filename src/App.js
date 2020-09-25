@@ -17,24 +17,26 @@ const override = css`
 function App() {
   let [keyword, setKeyword] = useState("");
   let [error, setError] = useState(null);
-  let [repo, setRepo] = useState("react");
-  let [owner, setOwner] = useState("Facebook");
+  let [repo, setRepo] = useState("");
+  let [owner, setOwner] = useState("");
   let [loading, setLoading] = useState(null);
   let [list, setList] = useState([]);
   let [totalPageNum, setTotalPageNum] = useState(1);
   let [page, setPage] = useState(1);
   let [apiWithPageNum, setApiWithPageNum] = useState("");
-
   const [show, setShow] = useState(false);
-  let [commentsData, setCommentsData] = useState(null);
- let [commebntURL, setCommentURL] = use
+
+  // Comment States
+  let [loadingComment, setLoadingComment] = useState(false);
+  let [commentList, setCommentList] = useState([]);
+  let [commentPageNumber, setCommentPageNumber] = useState(1);
+  let [commentTotalPage, setCommentTotalPage] = useState(null);
+  let [issueNumber, setissueNumber] = useState(19851);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  //1 get one issue
-  //2 get commentList
-  //3 display the comment list
-  //4
+  
   const handleSubmit = () => {
     console.log("keyword", keyword);
     let { owner, repo } = getOwnerRepo(keyword);
@@ -66,8 +68,8 @@ function App() {
         console.log("link", link);
         if (link) {
           const getTotalPage = link.match(
-            /page=(\d+)>; rel="last"/ // 이거 설명좀
-          ); // \d represent number + mean one to many
+            /page=(\d+)>; rel="last"/ 
+          );
           if (getTotalPage) {
             console.log("getTotalpage", getTotalPage);
             setTotalPageNum(parseInt(getTotalPage[1]));
@@ -82,30 +84,50 @@ function App() {
     }
   };
 
-  const getComments = async () => {
-    const url = `https://api.github.com/repos/facebook/react/issues/19851/comments`;
-    const response = await fetch(url);
-    const data = await response.json();
-    console.log("data", data);
-    setCommentsData(data);
+  // Comments part
+
+  const handleMoreComment = () => {
+    setCommentPageNumber(commentPageNumber + 1);
   };
 
-  const getUserLogin = (commentObject) => {
-    console.log("User Login",commentObject.user.login);
-    return commentObject.user.login;
-  }
-  const getAvatarUrl = (commentObject) => {
-    console.log("Avatar", commentObject.user.avatar_url)
-    return commentObject.user.avatar_url
-  }
+  const fetchComment = async () => {
+    try {
+      setLoadingComment(true);
+      const url = `https://api.github.com/repos/${owner}/${repo}/issues/${issueNumber}/comments?page=${commentPageNumber}&per_page=5`;
+      const response = await fetch(url);
+      if (response.status == 200) {
+        const data = await response.json();
+        setCommentList([...commentList, ...data]);
+        console.log("data", data);
+        console.log("comment list", data);
 
-  const getCommentBody = (commentObject) => {
-    return commentObject.body;
-  }
+        const link = response.headers.get("link");
+        console.log("link", link);
+        if (link) {
+          const getTotalCommentPage = link.match(
+            /page=(\d+)>; rel="last"/ 
+          );
+          if (getTotalCommentPage) {
+            setCommentTotalPage(parseInt(getTotalCommentPage[1]));
+          }
+        }
+      } else {
+        setError("API has some problem");
+      }
+      setLoadingComment(false);
+    } catch (err) {
+      setError(`FETCH ERROR ${err.message}`);
+    }
+  };
 
-  const getCommentPostedTime = (commentObject) => {
-    console.log("Time", commentObject.updated_at)
-  }
+  
+
+  useEffect(() => {
+    if (!owner || !repo) {
+      return;
+    }
+    fetchComment();
+  }, [commentPageNumber, issueNumber]);
 
   useEffect(() => {
     if (!owner || !repo) {
@@ -137,7 +159,6 @@ function App() {
           linkClass="page-link"
         />
       </div>
-
       {loading ? (
         <ClipLoader
           css={override}
@@ -148,16 +169,10 @@ function App() {
       ) : (
         <IssuesList list={list} />
       )}
-
       <IssueModal
         handleClose={handleClose}
         handleShow={handleShow}
         show={show}
-        commentsData={commentsData}
-        getUserLogin={getUserLogin}
-        getAvatarUrl={getAvatarUrl}
-        getCommentBody={getCommentBody}
-        getCommentPostedTime={getCommentPostedTime}
       />
     </div>
   );
