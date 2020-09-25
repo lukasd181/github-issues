@@ -15,7 +15,7 @@ const SearchBox = ({ setKeyword, handleSubmit }) => {
         <FormControl
           type="text"
           placeholder="Search"
-          className="mr-sm-2"
+          className="mr-sm-2 search-bar"
           onChange={(event) => setKeyword(event.target.value)}
         />
         <Button variant="outline-success" type="submit">
