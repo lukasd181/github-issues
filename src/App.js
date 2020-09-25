@@ -23,7 +23,6 @@ function App() {
   let [list, setList] = useState([]);
   let [totalPageNum, setTotalPageNum] = useState(1);
   let [page, setPage] = useState(1);
-  let [apiWithPageNum, setApiWithPageNum] = useState("");
 
   const [show, setShow] = useState(false);
 
@@ -84,19 +83,15 @@ function App() {
     getIssues();
   }, [owner, repo, page]);
 
-  // FOR MODAL TEST ONLY
-  // let [clickedIssue, setClickedIssue] = useState(null);
-  // const testGetIssues = async () => {
-  //   const url = `https://api.github.com/repos/facebook/react/issues/19851`;
-  //   const response = await fetch(url);
-  //   const data = await response.json();
-  //   console.log("data", data);
-  //   setClickedIssue(data);
-  // };
-  // useEffect(() => {
-  //   testGetIssues();
-  // }, []);
-  // FOR MODAL TEST ONLY
+  // FOR MODAL
+  let [clickedIssue, setClickedIssue] = useState(null);
+  const selectIssue = async (id) => {
+    const url = id;
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log("data", data);
+    setClickedIssue(data);
+  };
 
   return (
     <div>
@@ -130,14 +125,18 @@ function App() {
           loading={loading}
         />
       ) : (
-        <IssuesList list={list} />
+        <IssuesList
+          list={list}
+          handleShow={handleShow}
+          selectIssue={selectIssue}
+        />
       )}
 
       <IssueModal
         handleClose={handleClose}
         handleShow={handleShow}
         show={show}
-        // clickedIssue={clickedIssue}
+        clickedIssue={clickedIssue}
       />
     </div>
   );
