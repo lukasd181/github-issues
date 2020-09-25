@@ -1,19 +1,23 @@
 import React from "react";
 import CommentList from "../commentList";
 import { Button, Modal } from "react-bootstrap";
+import ReactMarkdown from "react-markdown";
 
-const IssueModal = ({ handleClose, handleShow, show }) => {
+const IssueModal = ({ handleClose, handleShow, show, clickedIssue }) => {
+  console.log("modal", clickedIssue);
   return (
     <div>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
-
-      <Modal show={show} onHide={handleClose}>
+      <Modal size="xl" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          {clickedIssue && (
+            <Modal.Title>
+              #{clickedIssue.number} {clickedIssue.title}
+            </Modal.Title>
+          )}
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Body>
+          {clickedIssue && <ReactMarkdown source={clickedIssue.body} />}
+        </Modal.Body>
         <Modal.Footer>
           <CommentList />
         </Modal.Footer>
