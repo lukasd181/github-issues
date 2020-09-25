@@ -23,7 +23,6 @@ function App() {
   let [list, setList] = useState([]);
   let [totalPageNum, setTotalPageNum] = useState(1);
   let [page, setPage] = useState(1);
-  let [apiWithPageNum, setApiWithPageNum] = useState("");
   const [show, setShow] = useState(false);
 
   // Comment States
@@ -59,7 +58,7 @@ function App() {
       setLoading(true);
       const url = `https://api.github.com/repos/${owner}/${repo}/issues?page=${page}`;
       const response = await fetch(url);
-      if (response.status == 200) {
+      if (response.status === 200) {
         const data = await response.json();
         setList(data);
         console.log("data", data);
@@ -67,9 +66,7 @@ function App() {
         const link = response.headers.get("link");
         console.log("link", link);
         if (link) {
-          const getTotalPage = link.match(
-            /page=(\d+)>; rel="last"/ 
-          );
+          const getTotalPage = link.match(/page=(\d+)>; rel="last"/);
           if (getTotalPage) {
             console.log("getTotalpage", getTotalPage);
             setTotalPageNum(parseInt(getTotalPage[1]));
@@ -134,6 +131,24 @@ function App() {
     getIssues();
   }, [owner, repo, page]);
 
+  // FOR MODAL
+  let [clickedIssue, setClickedIssue] = useState(null);
+  const selectIssue = async (id) => {
+    try {
+      const url = id;
+      const response = await fetch(url);
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log("data", data);
+        setClickedIssue(data);
+      } else {
+        setError("Issue: API has some problem");
+      }
+    } catch (err) {
+      setError(`FETCH ERROR ${err.message}`);
+    }
+  };
+
   return (
     <div>
       <div className="search-div">
@@ -165,12 +180,17 @@ function App() {
           loading={loading}
         />
       ) : (
-        <IssuesList list={list} />
+        <IssuesList
+          list={list}
+          handleShow={handleShow}
+          selectIssue={selectIssue}
+        />
       )}
       <IssueModal
         handleClose={handleClose}
         handleShow={handleShow}
         show={show}
+        clickedIssue={clickedIssue}
       />
     </div>
   );

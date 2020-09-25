@@ -1,13 +1,17 @@
 .oneIssue {
-    display:flex;
+  display: flex;
 
-    padding:5px;
-    margin:20px;
-    
+  padding: 5px;
+  margin: 20px;
 }
-.avatar{
-    padding-right:20px;
+.avatar {
+  padding-right: 20px;
 }
-.userNameline{
-    color: gray;
+.userNameline {
+  color: gray;
+}
+
+.oneIssue:hover {
+  background: lightgray;
+  cursor: pointer;
 }

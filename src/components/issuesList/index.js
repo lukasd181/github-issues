@@ -2,7 +2,7 @@ import styles from "./issuesList.module.css";
 import React from "react";
 import Moment from "react-moment";
 
-const IssuesList = ({ list }) => {
+const IssuesList = ({ list, handleShow, selectIssue }) => {
   const wordTrim = (string) => {
     if (string.length > 120) {
       let newStr = string.split("", 120).join("");
@@ -14,9 +14,17 @@ const IssuesList = ({ list }) => {
   return (
     <div className="container">
       {list.map((item) => (
-        <div className={styles.oneIssue}>
+        <div
+          className={styles.oneIssue}
+          onClick={() => {
+            console.log("item", item.url);
+            let id = item.url;
+            selectIssue(id);
+            handleShow();
+          }}
+        >
           <div className={styles.avatar}>
-            <img src={item.user.avatar_url} width={150} />
+            <img src={item.user.avatar_url} width={150} alt="" />
           </div>
 
           <div>
@@ -37,8 +45,6 @@ const IssuesList = ({ list }) => {
             {item.labels.map((label) => (
               <div className="badge badge-success">{label.name}</div>
             ))}
-
-            {/* <button>Launch Demo</button> */}
           </div>
         </div>
       ))}
