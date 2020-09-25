@@ -1,9 +1,10 @@
 import React from "react";
 import CommentList from "../commentList";
-import { Button, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
+import CodeBlock from "./CodeBlock";
 
-const IssueModal = ({ handleClose, handleShow, show, clickedIssue }) => {
+const IssueModal = ({ handleClose, show, clickedIssue }) => {
   console.log("modal", clickedIssue);
   return (
     <div>
@@ -16,7 +17,12 @@ const IssueModal = ({ handleClose, handleShow, show, clickedIssue }) => {
           )}
         </Modal.Header>
         <Modal.Body>
-          {clickedIssue && <ReactMarkdown source={clickedIssue.body} />}
+          {clickedIssue && (
+            <ReactMarkdown
+              source={clickedIssue.body}
+              renderers={{ code: CodeBlock }}
+            />
+          )}
         </Modal.Body>
         <Modal.Footer>
           <CommentList />
