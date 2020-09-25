@@ -7,10 +7,6 @@ const IssueModal = ({ handleClose, handleShow, show, clickedIssue }) => {
   console.log("modal", clickedIssue);
   return (
     <div>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
-
       <Modal size="xl" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           {clickedIssue && (

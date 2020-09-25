@@ -59,9 +59,7 @@ function App() {
         const link = response.headers.get("link");
         console.log("link", link);
         if (link) {
-          const getTotalPage = link.match(
-            /page=(\d+)>; rel="last"/ // 이거 설명좀
-          ); // \d represent number + mean one to many
+          const getTotalPage = link.match(/page=(\d+)>; rel="last"/);
           if (getTotalPage) {
             console.log("getTotalpage", getTotalPage);
             setTotalPageNum(parseInt(getTotalPage[1]));
@@ -86,11 +84,19 @@ function App() {
   // FOR MODAL
   let [clickedIssue, setClickedIssue] = useState(null);
   const selectIssue = async (id) => {
-    const url = id;
-    const response = await fetch(url);
-    const data = await response.json();
-    console.log("data", data);
-    setClickedIssue(data);
+    try {
+      const url = id;
+      const response = await fetch(url);
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log("data", data);
+        setClickedIssue(data);
+      } else {
+        setError("Issue: API has some problem");
+      }
+    } catch (err) {
+      setError(`FETCH ERROR ${err.message}`);
+    }
   };
 
   return (
