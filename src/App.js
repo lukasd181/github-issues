@@ -85,7 +85,6 @@ function App() {
   };
 
   // Comments part
-
   const handleMoreComment = () => {
     setCommentPageNumber(commentPageNumber + 1);
   };
@@ -119,7 +118,6 @@ function App() {
       setError(`FETCH ERROR ${err.message}`);
     }
   };
-
   
 
   useEffect(() => {
