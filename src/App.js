@@ -47,7 +47,7 @@ function App() {
       setLoading(true);
       const url = `https://api.github.com/repos/${owner}/${repo}/issues`;
       const response = await fetch(url);
-      if (response.status == 200) {
+      if (response.status === 200) {
         const data = await response.json();
         console.log("data", data);
       } else {
@@ -65,6 +65,20 @@ function App() {
     }
     getIssues();
   }, [owner, repo]);
+
+  // FOR MODAL TEST ONLY
+  // let [clickedIssue, setClickedIssue] = useState(null);
+  // const testGetIssues = async () => {
+  //   const url = `https://api.github.com/repos/facebook/react/issues/19851`;
+  //   const response = await fetch(url);
+  //   const data = await response.json();
+  //   console.log("data", data);
+  //   setClickedIssue(data);
+  // };
+  // useEffect(() => {
+  //   testGetIssues();
+  // }, []);
+  // FOR MODAL TEST ONLY
 
   return (
     <div>
@@ -86,6 +100,7 @@ function App() {
         handleClose={handleClose}
         handleShow={handleShow}
         show={show}
+        // clickedIssue={clickedIssue}
       />
     </div>
   );
