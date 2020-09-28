@@ -1,6 +1,6 @@
 import React from "react";
 import CommentList from "../commentList";
-import { Modal } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
 import CodeBlock from "./CodeBlock";
 
