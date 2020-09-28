@@ -4,9 +4,6 @@ import { Modal } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
 import CodeBlock from "./CodeBlock";
 
-<<<<<<< HEAD
-const IssueModal = ({ handleClose, show, clickedIssue }) => {
-=======
 import styles from "./issueModal.module.css";
 
 const IssueModal = ({
@@ -19,7 +16,6 @@ const IssueModal = ({
   loadingComment,
   ifOutOfPage,
 }) => {
->>>>>>> 6440ab90991751e4caa824f3848a0a6962b70cdf
   console.log("modal", clickedIssue);
   return (
     <div>
