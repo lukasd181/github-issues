@@ -1,7 +1,8 @@
 import React from "react";
 import CommentList from "../commentList";
-import { Button, Modal } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
+import CodeBlock from "./CodeBlock";
 
 import styles from "./issueModal.module.css";
 
@@ -27,7 +28,12 @@ const IssueModal = ({
           )}
         </Modal.Header>
         <Modal.Body>
-          {clickedIssue && <ReactMarkdown source={clickedIssue.body} />}
+          {clickedIssue && (
+            <ReactMarkdown
+              source={clickedIssue.body}
+              renderers={{ code: CodeBlock }}
+            />
+          )}
         </Modal.Body>
         <Modal.Footer className={styles.commentSection}>
           <CommentList
