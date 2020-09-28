@@ -9,6 +9,7 @@ import IssueModal from "./components/issueModal";
 import Pagination from "react-js-pagination";
 import IssuesList from "./components/issuesList";
 
+
 const override = css`
   display: block;
   margin: 0 auto;
@@ -30,12 +31,11 @@ function App() {
   let [commentList, setCommentList] = useState([]);
   let [commentPageNumber, setCommentPageNumber] = useState(1);
   let [commentTotalPage, setCommentTotalPage] = useState(null);
-  let [issueNumber, setissueNumber] = useState(19851);
+  let [issueNumber, setIssueNumber] = useState(19851);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  
   const handleSubmit = () => {
     console.log("keyword", keyword);
     let { owner, repo } = getOwnerRepo(keyword);
@@ -82,11 +82,23 @@ function App() {
   };
 
   // Comments part
+
+  const ifOutOfPage = () => {
+    console.log("total comment page", commentTotalPage)
+    console.log("Im in ifOutOfPage")
+    if (commentTotalPage === commentPageNumber) {
+      console.log("In if state")
+      return true;
+    }
+    return false;
+  }
+
   const handleMoreComment = () => {
     setCommentPageNumber(commentPageNumber + 1);
   };
 
   const fetchComment = async () => {
+    if (!issueNumber) {return;}
     try {
       setLoadingComment(true);
       const url = `https://api.github.com/repos/${owner}/${repo}/issues/${issueNumber}/comments?page=${commentPageNumber}&per_page=5`;
@@ -98,27 +110,27 @@ function App() {
         console.log("comment list", data);
 
         const link = response.headers.get("link");
-        console.log("link", link);
+        console.log("link COMMENT", link);
         if (link) {
-          const getTotalCommentPage = link.match(
-            /page=(\d+)>; rel="last"/ 
-          );
+          const getTotalCommentPage = link.match(/page=(\d+)>; rel="last"/);
           if (getTotalCommentPage) {
             setCommentTotalPage(parseInt(getTotalCommentPage[1]));
           }
         }
       } else {
-        setError("API has some problem");
+        setError("COMMENT-- API has some problem");
       }
       setLoadingComment(false);
     } catch (err) {
       setError(`FETCH ERROR ${err.message}`);
     }
   };
-  
-
+  const setDefaultComment = () => {
+    setCommentList([]);
+    setCommentPageNumber(1);
+  }
   useEffect(() => {
-    if (!owner || !repo) {
+    if (!owner || !repo || !show) {
       return;
     }
     fetchComment();
@@ -134,6 +146,7 @@ function App() {
   // FOR MODAL
   let [clickedIssue, setClickedIssue] = useState(null);
   const selectIssue = async (id) => {
+    setDefaultComment();
     try {
       const url = id;
       const response = await fetch(url);
@@ -141,6 +154,7 @@ function App() {
         const data = await response.json();
         console.log("data", data);
         setClickedIssue(data);
+        setIssueNumber(data.number);
       } else {
         setError("Issue: API has some problem");
       }
@@ -151,6 +165,7 @@ function App() {
 
   return (
     <div>
+      { console.log("Out of Page Comment", ifOutOfPage())}
       <div className="search-div">
         <SearchBox setKeyword={setKeyword} handleSubmit={handleSubmit} />
       </div>
@@ -191,6 +206,10 @@ function App() {
         handleShow={handleShow}
         show={show}
         clickedIssue={clickedIssue}
+        commentList={commentList}
+        handleMoreComment={handleMoreComment}
+        loadingComment={loadingComment}
+        ifOutOfPage={ifOutOfPage}
       />
     </div>
   );
