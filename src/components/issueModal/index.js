@@ -3,7 +3,18 @@ import CommentList from "../commentList";
 import { Button, Modal } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
 
-const IssueModal = ({ handleClose, handleShow, show, clickedIssue }) => {
+import styles from "./issueModal.module.css";
+
+const IssueModal = ({
+  handleClose,
+  handleShow,
+  show,
+  clickedIssue,
+  commentList,
+  handleMoreComment,
+  loadingComment,
+  ifOutOfPage,
+}) => {
   console.log("modal", clickedIssue);
   return (
     <div>
@@ -18,8 +29,19 @@ const IssueModal = ({ handleClose, handleShow, show, clickedIssue }) => {
         <Modal.Body>
           {clickedIssue && <ReactMarkdown source={clickedIssue.body} />}
         </Modal.Body>
-        <Modal.Footer>
-          <CommentList />
+        <Modal.Footer className={styles.commentSection}>
+          <CommentList
+            commentList={commentList}
+            handleMoreComment={handleMoreComment}
+            loadingCommen={loadingComment}
+          />
+          <div>
+            {ifOutOfPage() ? (
+              <></>
+            ) : (
+              <Button onClick={handleMoreComment}>Show More</Button>
+            )}
+          </div>
         </Modal.Footer>
       </Modal>
     </div>
