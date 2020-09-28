@@ -1,0 +1,24 @@
+.userInfo {
+  display: flex;
+  
+}
+
+.comment {
+  display: flex;
+}
+
+.name {
+  margin-right: 5px;
+  font-weight: 700;
+  color: gray
+}
+
+.time{
+    font-weight: 700;
+    color: gray
+}
+
+.userImg {
+  max-width: 125px;
+  margin-right: 20px;
+}
